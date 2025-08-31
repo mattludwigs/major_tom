@@ -15,6 +15,8 @@ This exists for two reasons:
 The goal of this project is to simulate the distributed nature of communication
 between an operator's console, a ground station, and a satellite.
 
+A secondary goal of this is to have fun and learn.
+
 ## Usage
 
 ```elixir
@@ -43,5 +45,18 @@ For this exercise, I decided to add three layers:
 between a satellite and ground operators
 3. A satellite simulation runtime called `MajorTom.Satellites.SatelliteEngine` to simulate a satellite
 
-While in OTP I could drop the second layer, I want to add it to illustrate how these
-systems can actually be built
+While in OTP I could drop the second layer, I want to add it to illustrate how
+systems like this could _maybe_ be built in real life.
+
+Each layer introduces error isolation and the ground station will monitor
+satellites for if they "go down" and notify the operator. This will allow for
+fault tolerance between the systems and give the operator 
+
+## TODOs
+
+- [ ] Integrate telemetry into a time series DB
+- [ ] Add better satellite simulation logic such a reducing battery over time (which will be a telemetry metric)
+- [ ] Add more commands and better event system
+- [ ] Scheduled missions 
+- [ ] Helpers to force simulations to see how the OTP system responses
+
