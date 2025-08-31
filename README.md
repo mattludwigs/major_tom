@@ -2,10 +2,12 @@
 
 > "Ground control to Major Tom" - David Bowie
 
-This repo is just a repo to exercise some OTP specific skills to simulate
-ground control software for satellites.
+OTP focused satellite mission control simulator.
 
-It exists for two reasons:
+> [!NOTE]
+> This is just for fun and learning purposes and not reflection of a production system nor a reflection of the actual domain.
+
+This exists for two reasons:
 
 1. Explore a problem space for my own learning
 2. To really leverage OTP for fun and demonstration purposes
@@ -39,7 +41,7 @@ For this exercise, I decided to add three layers:
 1. The main operator (this is the top level `MajorTom` module)
 2. The ground station API. This simulates a ground station API that handles the communication
 between a satellite and ground operators
-3. A satellite runtime called `MajorTom.Satellites.SatelliteEngine` to simulate a satellite
+3. A satellite simulation runtime called `MajorTom.Satellites.SatelliteEngine` to simulate a satellite
 
 While in OTP I could drop the second layer, I want to add it to illustrate how these
 systems can actually be built
