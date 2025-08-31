@@ -53,6 +53,7 @@ defmodule MajorTom.Satellites.Satellite do
         | status: :in_orbit,
           battery: new_battery,
           orbit_phase: movement.end_phase,
+          altitude_km: 160,
           movement_log: [movement | satellite.movement_log]
       }
     else
