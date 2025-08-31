@@ -41,10 +41,11 @@ defmodule MajorTom.Satellites.SatelliteEngine do
     # stored the caller pid in teh state and replied directly that. However,
     # that would require tracking many callers pids and mapping the right
     # response by to that specific caller. I think for this case events are
-    # but if need to route specific responses by to many callers, we'd to
+    # fine but if need to route specific responses by to many callers, we could
     # implement that.
+    #
     # I did this in Grizzly (https://github.com/smartrent/grizzly) due to wanting
-    # synchronizing of async messages.41G
+    # synchronizing of async messages.
     Events.broadcast(satellite.call_sign, :satellite_launch_initiated, %{satellite: satellite})
 
     launch_satellite(state)
