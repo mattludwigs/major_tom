@@ -50,7 +50,8 @@ systems like this could _maybe_ be built in real life.
 
 Each layer introduces error isolation and the ground station will monitor
 satellites for if they "go down" and notify the operator. This will allow for
-fault tolerance between the systems and give the operator 
+fault tolerance between the systems and give the operator data about the state
+of the satellites.
 
 ## TODOs
 
