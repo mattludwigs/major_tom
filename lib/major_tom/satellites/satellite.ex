@@ -10,14 +10,14 @@ defmodule MajorTom.Satellites.Satellite do
           delta: float(),
           cost: float(),
           timestamp: integer()
-  }
+        }
 
   @type t() :: %__MODULE__{
           orbit_phase: float() | nil,
           altitude_km: float(),
           status: :pre_orbit | :in_orbit | :failed,
           power: float(),
-          batter: float(),
+          battery: float(),
           call_sign: String.t(),
           movement_log: [movement_event()]
         }
@@ -29,7 +29,7 @@ defmodule MajorTom.Satellites.Satellite do
             altitude_km: 0.0,
             status: :pre_orbit,
             power: 0.0,
-            batter: 100.0,
+            battery: 100.0,
             call_sign: nil,
             movement_log: []
 
@@ -43,11 +43,15 @@ defmodule MajorTom.Satellites.Satellite do
 
   def move(satellite, rate) do
     movement = get_movement(satellite, rate)
+    # TODO make this more based off the movement and power level
+    battery_used = :rand.uniform()
+    new_battery = max(satellite.battery - battery_used, 0.0)
 
     if movement.end_phase > 0.1 do
       %{
         satellite
         | status: :in_orbit,
+          battery: new_battery,
           orbit_phase: movement.end_phase,
           movement_log: [movement | satellite.movement_log]
       }
