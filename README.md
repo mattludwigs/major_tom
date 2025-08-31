@@ -5,7 +5,7 @@
 OTP focused satellite mission control simulator.
 
 > [!NOTE]
-> This is just for fun and learning purposes and not reflection of a production system nor a reflection of the actual domain.
+> This is just for fun and learning purposes and not a reflection of a production system nor a reflection of the actual domain.
 
 This exists for two reasons:
 
