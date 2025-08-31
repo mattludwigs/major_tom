@@ -35,7 +35,7 @@ It purposely uses OTP heavily as way to show case how one may architect these sy
 in a complete OTP style. 
 
 Another thing to note is the API for each domain aims to hide the complexities of the
-OTP system and effectively abstracts OTP away. In my opinion, good OTP code is hidden
+OTP system and effectively abstracts OTP away. In my opinion, good OTP code is hids
 abstractions so the call sites do not need to know about process and how those are managed.
 
 For this exercise, I decided to add three layers:
