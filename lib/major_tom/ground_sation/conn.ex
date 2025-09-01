@@ -23,7 +23,8 @@ defmodule MajorTom.GroundStation.Conn do
     :satellite_launch_initiated,
     :satellite_in_orbit,
     :satellite_launch_failed,
-    :satellite_orbiting
+    :satellite_orbiting,
+    :transmit_telemetry
   ]
 
   def start_link(init_args) do
@@ -60,6 +61,11 @@ defmodule MajorTom.GroundStation.Conn do
     send(operator, {:satellite_down, satellite_name, reason})
 
     {:noreply, %{state | monitor_ref: nil}}
+  end
+
+  def handle_info({:major_tom, :transmit_telemetry, telemetry}, state) do
+    send(state.operator, {:satellite_telemetry, telemetry})
+    {:noreply, state}
   end
 
   def handle_info({:major_tom, event, %{satellite: satellite}}, state) do

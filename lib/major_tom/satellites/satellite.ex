@@ -88,4 +88,12 @@ defmodule MajorTom.Satellites.Satellite do
   def calc_new_orbit_phase(satellite, delta) do
     Float.floor(delta, 2) + satellite.orbit_phase
   end
+
+  def total_cost(satellite) do
+    # this wont scale after a while, but for now it is simple enough
+    # for this demo
+    Enum.reduce(satellite.movement_log, 0.0, fn movement, acc ->
+      acc + movement.cost
+    end)
+  end
 end

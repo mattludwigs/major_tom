@@ -3,9 +3,10 @@ defmodule MajorTom.Satellites.SatelliteEngine do
 
   use GenServer
 
-  @orbiting_tick_interval 3000
-
   alias MajorTom.Satellites.{Events, Satellite}
+
+  @orbiting_tick_interval 3000
+  @operating_tick_interval 30 * 1000 # 30 seconds
 
   def start_link(opts) do
     GenServer.start_link(__MODULE__, opts, name: via_name(opts))
@@ -23,8 +24,11 @@ defmodule MajorTom.Satellites.SatelliteEngine do
   @impl GenServer
   def init(opts) do
     satellite_name = Keyword.fetch!(opts, :name)
+    state = %{satellite: Satellite.new(satellite_name)}
 
-    {:ok, %{satellite: Satellite.new(satellite_name)}}
+    emit_telemetry_and_schedule_tick(state)
+
+    {:ok, state}
   end
 
   def issue_command(satellite_name, command, args \\ []) do
@@ -67,6 +71,16 @@ defmodule MajorTom.Satellites.SatelliteEngine do
     {:noreply, %{state | satellite: satellite}}
   end
 
+  def handle_info(:operating_tick, state) do
+    %{satellite: satellite} = state
+
+    satellite = Satellite.move(satellite, 1000.0)
+    state = %{state | satellite: satellite}
+
+    emit_telemetry_and_schedule_tick(state)
+    {:noreply, state}
+  end
+
   defp launch_satellite(state) do
     %{satellite: satellite} = state
     # make really small adjustments while we get into orbit
@@ -101,5 +115,23 @@ defmodule MajorTom.Satellites.SatelliteEngine do
 
         {:noreply, %{state | satellite: moved_satellite}}
     end
+  end
+
+  defp emit_telemetry_and_schedule_tick(state) do
+    %{satellite: satellite} = state
+
+    Events.broadcast(satellite.call_sign, :transmit_telemetry, build_telemetry(satellite))
+    Process.send_after(self(), :operating_tick, @operating_tick_interval)
+  end
+
+  defp build_telemetry(satellite) do
+    %{
+      call_sign: satellite.call_sign,
+      power: satellite.power,
+      battery: satellite.battery,
+      altitude_km: satellite.altitude_km,
+      orbit_phase: satellite.orbit_phase,
+      total_cost: Satellite.total_cost(satellite)
+    }
   end
 end

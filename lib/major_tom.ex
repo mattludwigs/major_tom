@@ -68,4 +68,12 @@ defmodule MajorTom do
         {:reply, :ok, state}
     end
   end
+
+  @impl GenServer
+  def handle_info({:satellite_telemetry, telemetry}, state) do
+    # TODO: push to influxdb
+    dbg("Received telemetry for satellite: #{telemetry.call_sign}")
+
+    {:noreply, state}
+  end
 end
